@@ -1,4 +1,8 @@
-<?php get_header(); if(have_posts()) : while(have_posts())  : the_post(); 
+<?php 
+    get_header();
+    
+    if(have_posts()) : while(have_posts()) : the_post();
+
     if(get_post_meta(get_the_ID(), 'ppm_meta', true)) {
         $page_meta = get_post_meta(get_the_ID(), 'ppm_meta', true);
     } else {
