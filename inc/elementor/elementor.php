@@ -10,28 +10,34 @@ final class PPM_Elementor_Extension {
 	const MINIMUM_ELEMENTOR_VERSION = '2.0.0';
 	const MINIMUM_PHP_VERSION = '5.6';
 	private static $_instance = null;
+	
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
 	}
+
 	public function __construct() {
 		add_action( 'after_setup_theme', [ $this, 'init' ] );
 	}
+
 	public function init() {
 		if ( ! did_action( 'elementor/loaded' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_missing_main_plugin' ] );
 			return;
 		}
+
 		if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_elementor_version' ] );
 			return;
 		}
+
 		if ( version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '<' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_php_version' ] );
 			return;
 		}
+
 		add_action( 'elementor/widgets/widgets_registered', [ $this, 'init_widgets' ] );
 	}
 
@@ -83,7 +89,7 @@ final class PPM_Elementor_Extension {
 
 		require_once( __DIR__ . '/addons.php' );
 
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \PPM_Slider_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Multivendor_Order_Button() );
 
 	}
 }

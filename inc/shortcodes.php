@@ -1,6 +1,6 @@
 <?php 
 
-function phone_btn_shortcode( $atts, $content = null  ) {
+/* function phone_btn_shortcode( $atts, $content = null  ) {
     extract( shortcode_atts( array(
         'class' => 'boxed-btn phone-btn',
     ), $atts) );
@@ -16,4 +16,4 @@ function phone_btn_shortcode( $atts, $content = null  ) {
  
     return $html;
 }   
-add_shortcode('phone_btn', 'phone_btn_shortcode');
+add_shortcode('phone_btn', 'phone_btn_shortcode'); */
