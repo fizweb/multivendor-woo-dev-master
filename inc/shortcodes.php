@@ -32,12 +32,71 @@ function puppies_ajax_function(){
 }
 
 
+function get_puppies_list( $search, $category, $date_order ){
+
+  $tax_query = array('relation' => 'AND');
+
+  if( !empty($category) ){
+    $tax_query[] = array(
+      'taxonomy' => 'puppy_cat',
+      'fields' 	 => 'id',
+      'terms'  	 => $category
+    );
+  }
+
+  $orderby = "date";
+
+  if( empty($date_order) ){
+    $date_order = "desc";
+  }
+
+  $args = array(
+    "posts_per_page" => -1,
+    "post_type" 		 => "puppy",
+    "s" 						 => $search,
+    "tax_query" 		 => $tax_query,
+    "orderby" 			 => $orderby,
+    "order"   			 => $date_order
+  );
+
+  $q = new WP_Query( $args );
+
+  return $q;
+
+}
+
+
+function render_puppies_list( $lists ){
+
+  $html = '<div class="puppies-list">';
+  
+    while ( $lists->have_posts() ) : $lists->the_post();
+      $html .= '
+      <div class="single-puppy-item">
+        <a href="/" class="single-puppy-wrapper">
+          <div class="puppy-bg" style="background-image: url('.
+            get_the_post_thumbnail_url(get_the_ID(), "medium")
+          .')"></div>
+
+          <h3>'. get_the_title() .'</h3>
+          <h5>'. get_the_date() .'</h5>
+        </a>
+      </div>';
+    endwhile; wp_reset_query();
+
+  $html .= '</div>';
+
+  echo $html;
+
+}
+
+
 add_shortcode( 'puppies_ajax', 'puppies_ajax_shortcode' );
 
 function puppies_ajax_shortcode() {
 
   $search 	  = $_GET['search'];
-  $puppyCat   = $_GET['cat'];
+  $category   = $_GET['cat'];
   $date_order = $_GET['date_order'];
 
   $html = '<div class="puppies-wrapper">
@@ -76,7 +135,7 @@ function puppies_ajax_shortcode() {
 
           <script>
             jQuery(document).ready( function ($) {
-              $("form select").change( function () {
+              $("form select").click( function () {
                 let category   = $("form #category").val();
                 let date_order = $("form #date_order").val();
                 $.ajax({
@@ -98,73 +157,16 @@ function puppies_ajax_shortcode() {
     </div>
     
     <div class="puppy-list-area">
-      <div class="container">
-        <div class="puppies-list">';
-              
-          $search 	  = $_GET['search'];
-          $puppyCat   = $_GET['cat'];
-          $date_order = $_GET['date_order'];
+      <div class="container">';
           
-          puppies_list( $puppies_list );
+        render_puppies_list( get_puppies_list( $search, $category, $date_order ) );
 
-          $html .= '
-        </div>
+        $html .= '
       </div>
     </div>
   </div>';
   
-
   echo $html;
-
-}
-
-
-function puppies_list( $puppies_list ){
-
-  $tax_query = array('relation' => 'AND');
-
-  if( !empty($puppyCat) ){
-    $tax_query[] = array(
-      'taxonomy' => 'puppy_cat',
-      'fields' 	 => 'id',
-      'terms'  	 => $puppyCat
-    );
-  }
-
-  $orderby = "date";
-
-  if( empty($date_order) ){
-    $date_order = "desc";
-  }
-
-  $args = array(
-    "posts_per_page" => -1,
-    "post_type" 		 => "puppy",
-    "s" 						 => $search,
-    "tax_query" 		 => $tax_query,
-    "orderby" 			 => $orderby,
-    "order"   			 => $date_order
-  );
-
-  $q = new WP_Query( $args );
-
-  $html = "";
-
-  while ( $q->have_posts() ) : $q->the_post();
-  $html .= '
-  <div class="single-puppy-item">
-    <a href="/" class="single-puppy-wrapper">
-      <div class="puppy-bg" style="background-image: url('.
-        get_the_post_thumbnail_url(get_the_ID(), "medium")
-      .')"></div>
-
-      <h3>'. get_the_title() .'</h3>
-      <h5>'. get_the_date() .'</h5>
-    </a>
-  </div>';
-  endwhile; wp_reset_query();
-
-  return $html;
 
 }
 
