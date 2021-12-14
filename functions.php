@@ -28,7 +28,7 @@ add_action('wp_enqueue_scripts', 'ppm_theme_resource_files');
 
 // Includes
 //include_once('inc/custom-posts.php');
-// include_once('inc/shortcodes.php');
+include_once('inc/shortcodes.php');
 include_once('inc/elementor/elementor.php');
 include_once('inc/metabox-and-options.php');
 
@@ -52,7 +52,7 @@ register_post_type( 'puppy', array(
 
 
 // Register Taxonomy for Puppies
-register_taxonomy( 
+register_taxonomy(
     "puppy_cat",
     "puppy",
     array(

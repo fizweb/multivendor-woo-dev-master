@@ -55,66 +55,71 @@ class PPM_Events_Widget extends \Elementor\Widget_Base {
 			// 'featured'       => true,
 		] );
 
-		$html = '<div class="upcoming-events"><div class="row">';
+		$html = '
+		<div class="upcoming-events-area">
+			<div class="container">
+				<div class="upcoming-events">';
 
-		// Loop through the events, displaying the single event content
-		foreach ( $events_all as $index => $event ) {
+			// Loop through the events, displaying the single event content
+			foreach ( $events_all as $index => $event ) {
 
-			$single_event = tribe_get_event($event->ID);
+				$single_event = tribe_get_event($event->ID);
 
-			$venue = ''; $organizer = '';
-			foreach ( $single_event->venues as $key => $venue ) {
-				$venue = $venue;
-			}
-			foreach ( $single_event->organizers as $key => $organizer ) {
-				$organizer = $organizer;
-			}
+				$venue = ''; $organizer = '';
+				foreach ( $single_event->venues as $key => $venue ) {
+					$venue = $venue;
+				}
+				foreach ( $single_event->organizers as $key => $organizer ) {
+					$organizer = $organizer;
+				}
 
-			// $html .= var_dump($venue);
+				// $html .= var_dump($venue);
 
-			$html .= '<div class="col-md-4">
-				<div class="single-event-item p-3">
+				$html .= '<div class="single-event-item">
 					<div class="single-event-wrapper">
-						<h3 class="single-event-title fs-4 mb-3">' . $single_event->post_title . '</h3>
+						<h3 class="single-event-title">' . $single_event->post_title . '</h3>
 
-						<div class="single-event-content mb-3">
+						<div class="single-event-content">
 							' . wpautop( $single_event->post_content ) . '
 						</div>
 
-						<div class="single-event-meta mb-3">
+						<div class="single-event-meta">
 							<div class="start-date">
 								Start:
-								<span class="mx-1">' . date('M-d-Y', strtotime($single_event->start_date)) . '</span> @
-								<span class="mx-1">' . date('h:i A', strtotime($single_event->start_date)) . '</span>	
+								<span class="">' . date("M d' Y", strtotime($single_event->start_date)) . '</span> @
+								<span class="">' . date('h:i A', strtotime($single_event->start_date)) . '</span>	
 							</div>
 							<div class="end-date">
 								End:
-								<span class="mx-1">' . date('M-d-Y', strtotime($single_event->end_date)) . '</span> @
-								<span class="mx-1">' . date('h:i A', strtotime($single_event->end_date)) . '</span>	
+								<span class="">' . date("M d' Y", strtotime($single_event->end_date)) . '</span> @
+								<span class="">' . date('h:i A', strtotime($single_event->end_date)) . '</span>	
 							</div>
 						</div>
 
-						<div class="single-event-organizer mb-3">'
+						<div class="single-event-organizer">'
 							. $organizer->post_title .
 						'</div>
 
 						<div class="single-event-location">
-							<h6 class="mb-1">Venue:</h6>
+							<h6 class="">Venue:</h6>
 
 							<div>
 								<span class="venue">' . tribe_get_venue($single_event->ID) . ',</span><br/>
 								<span class="city">' . tribe_get_city($single_event->ID) . ',</span>
-								<span class="country ml-5">' . tribe_get_country($single_event->ID) . '.</span>
+								<span class="country">' . tribe_get_country($single_event->ID) . '.</span>
 							</div>
 						</div>
 					</div>
+				</div>';
+
+			}
+
+
+			$html .= '
 				</div>
-			</div>';
+			</div>
+		</div>';
 
-		}
-
-
-		$html .= '</div></div>';
 
 		echo $html;
 

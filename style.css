@@ -150,13 +150,59 @@ input[type=text], input[type=email], input[type=tel], input[type=password], text
     text-transform: uppercase;
     background-color: #DE1FAF;
     color: #FFF;
-    border: 0;
     padding: 11px 20px;
+    border: 0;
+    border-radius: 3px;
     cursor: pointer;
 }
 
 .shop-now-button:hover {
     background-color: #c31698;
+}
+
+
+
+
+/* Events-Area */
+
+.upcoming-events {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+.single-event-item {
+    width: 33.33333%;
+    padding: 0 15px;
+    margin-bottom: 30px;
+}
+.single-event-wrapper {
+    padding: 15px;
+    border: 1px solid #d7dbdf;
+}
+.single-event-title,
+.single-event-content p,
+.single-event-meta,
+.single-event-organizer {
+    margin-bottom: 10px;
+} 
+.single-event-title {
+    font-size: 22px;
+}
+.single-event-content {
+    margin-bottom: 15px;
+}
+.single-event-content p:last-child,
+.single-event-location h6 {
+    margin-bottom: 0;
+}
+.single-event-location h6 {
+    font-size: 16px;
+}
+.single-event-location .country {
+    margin-left: 5px;
+}
+.single-event-meta span {
+    margin: 0 5px;
 }
 
 
@@ -171,20 +217,33 @@ input[type=text], input[type=email], input[type=tel], input[type=password], text
     justify-content: center;
     padding: 50px 0;
 }
-.puppy-element form {
+.puppy-element .single-form {
+    margin: 0 15px;
+}
+.puppy-element form:not(.single-form) input,
+.puppy-element form:not(.single-form) select,
+.puppy-element form:not(.single-form) button {
     margin: 0 15px;
 }
 .puppy-element form input,
-.puppy-element form select {
+.puppy-element form select,
+.puppy-element form button {
     min-width: 150px;
     height: 36px;
     background-color: #fff;
     border: 0;
     padding: 6px 12px;
     border-radius: 3px;
+    vertical-align: middle;
 }
 .puppy-element form input {
     min-width: 300px;
+}
+.puppy-element form button {
+    min-width: auto;
+    font-size: 22px;
+    padding: 0px 10px;
+    cursor: pointer;
 }
 
 .puppy-list-area {

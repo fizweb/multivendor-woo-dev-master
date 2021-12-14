@@ -33,6 +33,7 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 
 	}
 
+
 	protected function render() {
 
 		$settings = $this->get_settings_for_display();
@@ -47,10 +48,8 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 					<div class="puppy-element">
 						<form action="">
 							<input type="search" name="search" Placeholder="Search..." value="'.$search.'" />
-						</form>
-
-						<form action="">
-							<select name="cat">
+						
+							<select name="cat" id="cat">
 								<option value="">Filter by</option>';
 								
 								$puppy_categories = get_terms( 'puppy_cat' );
@@ -64,19 +63,21 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 								
 								$html .= '
 							</select>
-						</form>
-
-						<form action="">
-							<select name="date_order">
+						
+							<select name="date_order" id="date_order">
 								<option value="">Date modified</option>';
 								
-								$dateAsc = ($date_order == "asc") ? "selected" : "";
+								$dateAsc  = ($date_order == "asc") ? "selected" : "";
 								$dateDesc = ($date_order == "desc") ? "selected" : "";
 
 								$html .= '
 								<option value="asc"'. $dateAsc .'>Ascending</option>
 								<option value="desc"'. $dateDesc .'>Descending</option>
 							</select>
+
+							<button type="submit" class="submit">
+								<i class="fa fa-search"></i>
+							</button>
 						</form>
 					</div>
 				</div>
@@ -85,21 +86,33 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 			<div class="puppy-list-area">
 				<div class="container">
 					<div class="puppies-list">';
-					
-						$q = new WP_Query(
-							array(
-								"posts_per_page" => -1,
-								"post_type" 		 => "puppy",
-								"s" 						 => $search,
-								/* 'tax_query' => array(
-									array(
-										'taxonomy' => 'puppy_cat',
-										'field' 	 => 'term_id',
-										'terms' 	 => 36
-									)
-								) */
-							)
+								
+						$tax_query = array('relation' => 'AND');
+
+						if( !empty($puppyCat) ){
+							$tax_query[] = array(
+								'taxonomy' => 'puppy_cat',
+								'fields' 	 => 'id',
+								'terms'  	 => $puppyCat
+							);
+						}
+
+						$orderby = "date";
+
+						if( empty($date_order) ){
+							$date_order = "desc";
+						}
+
+						$args = array(
+							"posts_per_page" => -1,
+							"post_type" 		 => "puppy",
+							"s" 						 => $search,
+							"tax_query" 		 => $tax_query,
+							"orderby" 			 => $orderby,
+    					"order"   			 => $date_order
 						);
+					
+						$q = new WP_Query( $args );
 
 						// $html .= var_dump($q);
 
@@ -112,6 +125,7 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 								.')"></div>
 
 								<h3>'. get_the_title() .'</h3>
+								<h5>'. get_the_date() .'</h5>
 							</a>
 						</div>';
 						endwhile; wp_reset_query();
