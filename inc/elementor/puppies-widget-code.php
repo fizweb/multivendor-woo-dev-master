@@ -33,13 +33,14 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 
 	}
 
+	
 
 	protected function render() {
 
 		$settings = $this->get_settings_for_display();
 
 		$search 	  = $_GET['search'];
-		$puppyCat   = $_GET['category'];
+		$puppyCat   = $_GET['cat'];
 		$date_order = $_GET['date_order'];
 
 		$html = '<div class="puppies-wrapper">
@@ -47,15 +48,15 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 				<div class="container">
 					<div class="puppy-element">
 						<form action="">
-							<input type="search" name="search" id="search" Placeholder="Search..." value="'.$search.'" />
+							<input type="search" name="search" Placeholder="Search..." value="'.$search.'" />
 						
-							<select name="category" id="category">
+							<select name="cat" id="cat">
 								<option value="">Filter by</option>';
 								
 								$puppy_categories = get_terms( 'puppy_cat' );
 								foreach ( $puppy_categories as $cat ) {
 									$cat_info = get_term( $cat );
-									$selected = ($cat_info->term_id == $puppyCat) ? "selected" : "";
+									$selected = ($puppyCat == $cat_info->term_id) ? "selected" : "";
 									$html .= '<option value="'. $cat_info->term_id .'" '. $selected .'>'
 									. $cat_info->name 
 									.'</option>';
@@ -87,7 +88,7 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 				<div class="container">
 
 					<div id="puppies-list">
-						
+					
 						<div class="puppies-list">';
 							$tax_query = array('relation' => 'AND');
 
@@ -113,21 +114,23 @@ class PPM_Puppies_Widget extends \Elementor\Widget_Base {
 								"orderby" 			 => $orderby,
 								"order"   			 => $date_order
 							);
-					
+						
 							$q = new WP_Query( $args );
 
-							while ( $q->have_posts() ) : $q->the_post();
-								$html .= '
-								<div class="single-puppy-item">
-									<a href="/" class="single-puppy-wrapper">
-										<div class="puppy-bg" style="background-image: url('.
-											get_the_post_thumbnail_url(get_the_ID(), "medium")
-										.')"></div>
+							// $html .= var_dump($q);
 
-										<h3>'. get_the_title() .'</h3>
-										<h5>'. get_the_date() .'</h5>
-									</a>
-								</div>';
+							while ( $q->have_posts() ) : $q->the_post();
+							$html .= '
+							<div class="single-puppy-item">
+								<a href="/" class="single-puppy-wrapper">
+									<div class="puppy-bg" style="background-image: url('.
+										get_the_post_thumbnail_url(get_the_ID(), "medium")
+									.')"></div>
+
+									<h3>'. get_the_title() .'</h3>
+									<h5>'. get_the_date() .'</h5>
+								</a>
+							</div>';
 							endwhile; wp_reset_query();
 
 							$html .= '
