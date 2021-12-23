@@ -39,6 +39,10 @@ if(class_exists('WooCommerce')) {
 }
 
 
+require_once get_theme_file_path() .'/inc/cs-framework/codestar-framework.php';
+include_once('functions-csf.php');
+
+
 // Register Custom-Posts for Puppies
 register_post_type( 'puppy', array(
     "labels" => array(

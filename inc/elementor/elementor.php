@@ -90,10 +90,12 @@ final class PPM_Elementor_Extension {
 		require_once( __DIR__ . '/order-button.php' );
 		require_once( __DIR__ . '/events.php' );
 		require_once( __DIR__ . '/puppies-widget.php' );
+		require_once( __DIR__ . '/dokan-widget.php' );
 
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Multivendor_Order_Button() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \PPM_Events_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \PPM_Puppies_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \PPM_Dokan_Widget() );
 
 	}
 }
